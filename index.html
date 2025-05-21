@@ -39,7 +39,7 @@
     }
   });
 </script>
-        <a-scene encantar="stats: false; gizmos: false" loading-screen="enabled: false" renderer="antialias: true" precision= "lowp">
+        <a-scene encantar="stats: false; gizmos: true" loading-screen="enabled: false" renderer="antialias: true" precision= "lowp">
 
 
   <!-- The inputs that will feed the AR engine -->
@@ -147,7 +147,7 @@
                         src="#play-button-image"
                         color="snow"
                         width="0.8" height="0.8"
-                        scale="0.3 0.3"
+                        scale="0.5 0.5"
             
                         visible="false"
                         position="0 0 0.001"
@@ -169,7 +169,7 @@
                     -->
                     <ar-button
                         id="pause-button"
-                        width="2.7" height="1.543"
+                        width="2.7" height="1.2"
                         enabled="false"
 
                         visible="false"
@@ -179,31 +179,6 @@
                         ar-onvideopause="ar-button.enabled: false"
                         ar-onvideoended="ar-button.enabled: false"
                     ></ar-button>
-
-
-                    <!-- Rewind Button-->
-                    <ar-button
-                        id="rewind-button"
-                        src="#rewind-button-image"
-                        color="snow"
-                        width="0.8" height="0.8"
-                        scale="0.2 0.2"
-            
-                        visible="false"
-                        position="-0.3 0 0.001"
-                        material="transparent: false; alphaTest: 0.5"
-
-                        stop-propagation
-                        ar-video-control="action: rewind"
-                        
-
-                        
-                        ar-onvideoplay="ar-button.enabled: false; visible: false"
-                        ar-onvideopause="ar-button.enabled: true; visible: true"
-                        ar-onvideoended="ar-button.enabled: true; visible: true"
-                    ></ar-button>
-
-
 
 
                         <!-- Button group with background -->
@@ -283,7 +258,7 @@
                         position="0.6 0.22 0.03"
                         visible="true"
                         enabled="true"
-                        scale="0.3 0.3"
+                        scale="0.4 0.4"
                         
                         ar-video-control="action: unmute"
                         stop-propagation
@@ -291,7 +266,23 @@
                         ar-onclick__2="_target: #mute-button; ar-button.enabled: true; visible: true"
                     ></ar-button>
 
+<!-- Rewind Button-->
+                    <ar-button
+                        id="rewind-button"
+                        src="#rewind-button-image"
+                        color="snow"
+                        width="0.5" height="0.5"
+                        scale="0.4 0.4"
+            
+                        visible="true"
+                        enabled="true"
+                        position="-0.6 0.22 0.03"
+                        material="transparent: false; alphaTest: 0.5"
 
+                        stop-propagation
+                        ar-video-control="action: rewind"
+                    
+                    ></ar-button>
 
    
                 <a-image
