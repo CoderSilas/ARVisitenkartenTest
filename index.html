@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1">
+        <title>WebAR Video Player | encantar.js and A-Frame</title>
+        <script src="encantar.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-v1.6.0.min.js"></script>
+        <script src="aframe-with-encantar.js"></script>
+        <script src="addons/ar-scan-gimmick.js"></script>
+        <script src="addons/ar-clickable.js"></script>
+        <script src="addons/ar-button.js"></script>
+        <script src="addons/ar-video-player.js"></script>
+
+            <style>
+      body {   
+            background-image: url("Assets/EK_Logo_RGB.jpg");
+            background-repeat: no-repeat;           /* don’t tile it */
+            background-position: center center;     /* keep it centered */
+            background-size: contain;               /* scale the logo to fit inside the viewport */
+            /* if you want it to cover edge-to-edge (cropping some parts), use 'cover' instead */
+            margin: 0;                              /* remove default body margins */
+            min-height: 100vh;                      /* ensure it always fills the screen */ }
+      #scan { width: 100%; height: 100%; object-fit: contain; opacity: 0.75; }
+      /* Add to existing styles */
+      .clickable:hover {
+        cursor: pointer;
+        opacity: 0.8 !important;
+      }
+    </style>
+    </head>
+    <body>
+<script>
+  AFRAME.registerComponent('stop-propagation', {
+    init() {
+      this.el.addEventListener('click', evt => {
+        evt.stopPropagation();
+      });
+    }
+  });
+</script>
+        <a-scene encantar="stats: true; gizmos: true" loading-screen="enabled: false" renderer="antialias: true">
+
+
+  <!-- The inputs that will feed the AR engine -->
+            <ar-sources>
+
+                <!-- Use a webcam -->
+                <ar-camera-source resolution="md+">
+
+
+                    
+                </ar-camera-source>
+
+                <!-- Use a video element -->
+                <!--
+                <ar-video-source video="#my-video"></ar-video-source>
+                -->
+
+                <!-- Pointer source -->
+                <ar-pointer-source></ar-pointer-source>
+
+            </ar-sources>
+
+            <!-- The trackers we'll be using in AR -->
+            <ar-trackers>
+
+                <!-- We'll track images -->
+                <ar-image-tracker>
+
+                    <!-- List the images that you intend to track
+                         Make sure to follow the guidelines for images (see the docs) -->
+                    <ar-reference-image name="EK" src="Assets/ek_AR_Tracker.webp"></ar-reference-image>
+
+                </ar-image-tracker>
+
+                <!-- Pointer tracker -->
+                <ar-pointer-tracker></ar-pointer-tracker>
+
+            </ar-trackers>
+
+            <!-- The AR viewport -->
+            <ar-viewport>
+
+                <!-- A 2D overlay displayed in front of the AR scene -->
+                <ar-hud>
+<!--
+                    The info button 
+                    <a id="info" href="NOTICE.html" draggable="false"></a>
+
+                    The like button 
+                    <a id="like" href="https://encantar.dev" draggable="false"></a>
+-->
+                     The scan gimmick 
+                    <a-entity ar-scan-gimmick="src: Assets/scan.png; opacity: 0.75"></a-entity>
+
+                </ar-hud>
+
+            </ar-viewport>
+
+
+
+            <!--
+            +=================================================+
+            | Now let's create the virtual elements           |
+            | Whatever you add to <ar-root> will appear in AR |
+            +=================================================+
+            -->
+
+            <!-- A 3D camera adapted for AR -->
+            <ar-camera></ar-camera>
+
+            <!-- Light -->
+            <a-light type="ambient" intensity="1.0"></a-light>
+
+            <!-- AR content -->
+            <ar-root scale="1.07 1.07 1.07" position="0 0 0">
+
+
+         <!-- Video frame with white border -->
+            <a-entity position="0 0 0.01">
+
+            <!-- White border plane (slightly bigger than video) -->
+            <a-plane 
+                width="2.7" 
+                height="1.543" 
+                scale="1.23 1.44 0"
+                color="white" 
+                position="0 -0.14 -0.01" 
+                material="shader: flat">
+            </a-plane>
+
+            <!-- Video player on top -->
+            <ar-video-player
+                id="video-player"
+                src="#demo-video"
+                width="2.7"
+                height="1.543"
+                scale="1.2 1.2 1.2"
+                autoplay="true"
+                style="object-fit: cover;">
+
+
+                
+                    <ar-button
+                        id="play-button"
+                        src="#play-button-image"
+                        color="snow"
+                        width="0.8" height="0.8"
+                        scale="0.3 0.3"
+            
+                        visible="false"
+                        position="0 0 0.001"
+                        material="transparent: false; alphaTest: 0.5"
+
+                        ar-video-control="action: play"
+                        ar-onvideoplay="ar-button.enabled: false; visible: false"
+                        ar-onvideopause="ar-button.enabled: true; visible: true"
+                        ar-onvideoended="ar-button.enabled: true; visible: true"
+                    ></ar-button>
+
+
+
+
+                    <!--
+                        Pause button: located on top of the video
+                        It's an invisible button that is enabled only when the video is playing
+                        Note its width and height: the same of the video player
+                    -->
+                    <ar-button
+                        id="pause-button"
+                        width="2.7" height="1.543"
+                        enabled="false"
+
+                        visible="false"
+
+                        ar-video-control="action: pause"
+                        ar-onvideoplay="ar-button.enabled: true"
+                        ar-onvideopause="ar-button.enabled: false"
+                        ar-onvideoended="ar-button.enabled: false"
+                    ></ar-button>
+
+
+                    <!-- Rewind Button-->
+                    <ar-button
+                        id="rewind-button"
+                        src="#rewind-button-image"
+                        color="snow"
+                        width="0.8" height="0.8"
+                        scale="0.2 0.2"
+            
+                        visible="false"
+                        position="-0.3 0 0.001"
+                        material="transparent: false; alphaTest: 0.5"
+
+                        stop-propagation
+                        ar-video-control="action: rewind"
+                        
+
+                        
+                        ar-onvideoplay="ar-button.enabled: false; visible: false"
+                        ar-onvideopause="ar-button.enabled: true; visible: true"
+                        ar-onvideoended="ar-button.enabled: true; visible: true"
+                    ></ar-button>
+
+
+
+
+                        <!-- Button group with background -->
+                    <a-entity position="0 -0.75 0.4" scale="0.8 0.8">
+
+                    <!-- Blue rounded background -->
+                    <a-plane
+                    width="1.2"
+                    height="0.4"
+                    src="#blue-round-bg"
+                    material="transparent: false; alphaTest: 0.5"
+                    position="0 0 0"
+                    material="shader: flat; transparent: true">
+                    </a-plane>
+
+                    <!-- Webseiten Button-->
+                    <ar-button
+                        id="webseite-button"
+                        src="#home-button-image"
+                        material="transparent: false; alphaTest: 0.5"
+                        width="0.5" height="0.5"
+                        scale="0.5 0.5"
+                        position="-0.35 0.03 0.03"
+                        ar-navigation-button="https://elsterkind.de"> 
+                    </ar-button>
+
+
+                    <!-- Kontakt button -->
+                    <ar-button
+                        id="kontakt-button"
+                        src="#kontakt-button-image"
+                        width="0.5" height="0.5"
+                        material="transparent: false; alphaTest: 0.5"
+                        position="0 0.03 0.03"
+                        scale="0.5 0.5"
+                        ar-navigation-button="Assets/contact.vcf"
+                    ></ar-button>
+
+                    <!-- Agentur button -->
+                    <ar-button
+                        id="agentur-button"
+                        src="#agentur-button-image"
+                        width="0.5" height="0.5"
+                        material="transparent: false; alphaTest: 0.5"
+                        position="0.35 0.03 0.03"
+                        scale="0.5 0.5"
+                        ar-navigation-button="https://www.elsterkind.de/ueber-uns/?gt=office"
+                    ></ar-button>
+
+
+                     <!--
+                        Mute button
+                    -->
+                    <ar-button
+                        id="mute-button"
+                        src="#mute-button-image"
+                        color="springgreen"
+                        width="0.5" height="0.5"
+
+                        material="transparent: false; alphaTest: 0.5"
+                        position="0.6 0.22 0.03"
+                        visible="false"
+                        enabled="false"
+                        scale="0.3 0.3"
+                        
+                        ar-video-control="action: mute"
+                        stop-propagation
+                        ar-onclick__1="ar-button.enabled: false; visible: false"
+                        ar-onclick__2="_target: #unmute-button; ar-button.enabled: true; visible: true"
+                    ></ar-button>
+
+                    <ar-button
+                        id="unmute-button"
+                        src="#unmute-button-blauerrand"
+                        width="0.5" height="0.5"
+                        material="transparent: false; alphaTest: 0.5"
+                        position="0.6 0.22 0.03"
+                        visible="true"
+                        enabled="true"
+                        scale="0.3 0.3"
+                        
+                        ar-video-control="action: unmute"
+                        stop-propagation
+                        ar-onclick__1="ar-button.enabled: false; visible: false"
+                        ar-onclick__2="_target: #mute-button; ar-button.enabled: true; visible: true"
+                    ></ar-button>
+
+
+
+   
+                <a-image
+                    src="#agentur_text"
+                    width="1.8" 
+                    height="0.3"
+                    position="0.35 -0.14 0.01"
+                    scale="0.1 0.1"
+                    material="transparent: true;
+                     alphaTest: 0.1; shader: flat;
+                      minFilter: linear; magFilter: linear; generateMipmaps: false;"
+                   >
+                </a-image>     
+
+                 <a-image
+                    src="#kontakt_text"
+                    width="1.8" 
+                    height="0.3"
+                    position="0 -0.14 0.01"
+                    scale="0.1 0.1"
+                    material="transparent: true;
+                     alphaTest: 0.1; shader: flat;
+                      minFilter: linear; magFilter: linear; generateMipmaps: false;"
+                   >
+                </a-image>  
+
+
+                 <a-image
+                    src="#webseite_text"
+                    width="1.8" 
+                    height="0.3"
+                    position="-0.35 -0.14 0.01"
+                    scale="0.1 0.1"
+                    material="transparent: true;
+                     alphaTest: 0.1; shader: flat;
+                      minFilter: linear; magFilter: linear; generateMipmaps: false; color: #FFFFFF;" 
+                   >
+                </a-image>  
+
+                    </a-entity>
+
+
+
+                </ar-video-player>
+                </a-entity>
+            </ar-root>
+
+            <!-- Assets -->
+            <a-assets>
+                <video id="demo-video" src="Assets/EK_Reel_Visitenkarte.mp4" playsinline muted preload="auto"></video>
+                <img id="rewind-button-image" src="IconsPNG/replay_icon.png">
+                <img id="home-button-image" src="IconsPNG/Home_icon.png">
+                <img id="unmute-button-image" src="IconsPNG/unmute_icon.png">
+                
+
+                <a-asset-item id="contact-vcf" src="Assets/contact.vcf">
+                
+                <img id="mute-button-image" src="IconsPNG/unmute_icon.png">
+
+                <img id="play-button-image" src="IconsPNG/play_icon.png">
+                <img id="agentur-button-image" src="IconsPNG/Agentur_icon.png">
+                <img id="kontakt-button-image" src="IconsPNG/Kontakt_icon.png">
+                <img id="unmute-button-blauerrand" src="IconsPNG/unmute_menu.png">   
+                <img id="blue-round-bg" src="IconsPNG/menu_bg.png">
+
+                <img id="agentur_text" src="IconsPNG/agentur_text.png">
+                <img id="kontakt_text" src="IconsPNG/kontakt_text.png">
+                <img id="webseite_text" src="IconsPNG/webseite_text.png">
+
+
+
+        </a-scene>
+    </body>
+
+</html>
