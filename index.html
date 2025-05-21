@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1">
-        <title>WebAR Video Player | encantar.js and A-Frame</title>
+        <title>WEBAR Test</title>
         <script src="encantar.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-v1.6.0.min.js"></script>
         <script src="aframe-with-encantar.js"></script>
@@ -39,7 +39,7 @@
     }
   });
 </script>
-        <a-scene encantar="stats: false; gizmos: false" loading-screen="enabled: false" renderer="antialias: false" precision= "lowp">
+        <a-scene encantar="stats: false; gizmos: false" loading-screen="enabled: false" renderer="antialias: true" precision= "lowp">
 
 
   <!-- The inputs that will feed the AR engine -->
@@ -114,7 +114,7 @@
             <a-light type="ambient" intensity="1.0"></a-light>
 
             <!-- AR content -->
-            <ar-root scale="1.07 1.07 1.07" position="0 0 0">
+            <ar-root scale="1.0 1.0 1.0" position="0 0 0">
 
 
          <!-- Video frame with white border -->
@@ -302,7 +302,7 @@
                     scale="0.1 0.1"
                     material="transparent: true;
                      alphaTest: 0.1; shader: flat;
-                      minFilter: linear; magFilter: linear; generateMipmaps: false;"
+                      minFilter: linear; magFilter: nearest; generateMipmaps: false;"
                    >
                 </a-image>     
 
@@ -314,7 +314,7 @@
                     scale="0.1 0.1"
                     material="transparent: true;
                      alphaTest: 0.1; shader: flat;
-                      minFilter: linear; magFilter: linear; generateMipmaps: false;"
+                      minFilter: linear; magFilter: nearest; generateMipmaps: false;"
                    >
                 </a-image>  
 
@@ -327,7 +327,7 @@
                     scale="0.1 0.1"
                     material="transparent: true;
                      alphaTest: 0.1; shader: flat;
-                      minFilter: linear; magFilter: linear; generateMipmaps: false; color: #FFFFFF;" 
+                      minFilter: linear; magFilter: nearest; generateMipmaps: false;" 
                    >
                 </a-image>  
 
