@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1">
         <title>WEBAR Test</title>
-        <script src="encantar.js"></script>
+        <script src="encantar.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-v1.6.0.min.js"></script>
         <script src="aframe-with-encantar.js"></script>
         <script src="addons/ar-scan-gimmick.js"></script>
@@ -31,6 +31,9 @@
     </head>
     <body>
 <script>
+
+
+
   AFRAME.registerComponent('stop-propagation', {
     init() {
       this.el.addEventListener('click', evt => {
@@ -39,7 +42,7 @@
     }
   });
 </script>
-        <a-scene encantar="stats: false; gizmos: true" loading-screen="enabled: false" renderer="antialias: true" precision= "lowp">
+        <a-scene encantar="stats: false; gizmos: false" loading-screen="enabled: false" renderer="antialias: true" precision= "lowp">
 
 
   <!-- The inputs that will feed the AR engine -->
@@ -90,7 +93,10 @@
 
                     The like button 
                     <a id="like" href="https://encantar.dev" draggable="false"></a>
+                    
 -->
+
+
 
                     <a-entity ar-scan-gimmick="src: Assets/scan.png; opacity: 0.75"></a-entity>
 
