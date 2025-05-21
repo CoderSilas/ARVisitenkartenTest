@@ -39,14 +39,14 @@
     }
   });
 </script>
-        <a-scene encantar="stats: true; gizmos: true" loading-screen="enabled: false" renderer="antialias: true">
+        <a-scene encantar="stats: false; gizmos: false" loading-screen="enabled: false" renderer="antialias: false" precision= "lowp">
 
 
   <!-- The inputs that will feed the AR engine -->
             <ar-sources>
 
                 <!-- Use a webcam -->
-                <ar-camera-source resolution="md+">
+                <ar-camera-source resolution="sm+">
 
 
                     
@@ -91,7 +91,7 @@
                     The like button 
                     <a id="like" href="https://encantar.dev" draggable="false"></a>
 -->
-                     The scan gimmick 
+
                     <a-entity ar-scan-gimmick="src: Assets/scan.png; opacity: 0.75"></a-entity>
 
                 </ar-hud>
